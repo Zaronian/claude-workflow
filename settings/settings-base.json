@@ -1,0 +1,78 @@
+{
+  "permissions": {
+    "allow": [
+      "Read($HOME_PLACEHOLDER/Knowledge-Base/**)",
+      "Edit($HOME_PLACEHOLDER/Knowledge-Base/**)",
+      "Write($HOME_PLACEHOLDER/Knowledge-Base/**)",
+      "Glob($HOME_PLACEHOLDER/Knowledge-Base/**)",
+      "Grep($HOME_PLACEHOLDER/Knowledge-Base/**)",
+      "Read($HOME_PLACEHOLDER/.claude/**)",
+      "Edit($HOME_PLACEHOLDER/.claude/**)",
+      "Write($HOME_PLACEHOLDER/.claude/**)",
+      "Glob($HOME_PLACEHOLDER/.claude/**)",
+      "Grep($HOME_PLACEHOLDER/.claude/**)",
+      "Read($HOME_PLACEHOLDER/CLAUDE.md)",
+      "Edit($HOME_PLACEHOLDER/CLAUDE.md)",
+      "Read($HOME_PLACEHOLDER/.scratch/**)",
+      "Edit($HOME_PLACEHOLDER/.scratch/**)",
+      "Write($HOME_PLACEHOLDER/.scratch/**)",
+      "Glob($HOME_PLACEHOLDER/.scratch/**)",
+      "Grep($HOME_PLACEHOLDER/.scratch/**)",
+      "WebFetch(*)",
+      "WebSearch"
+    ],
+    "deny": [
+      "Read(**/.env*)",
+      "Edit(**/.env*)",
+      "Write(**/.env*)",
+      "Read(**/credentials*)",
+      "Read(**/*id_rsa*)",
+      "Read(**/*id_ed25519*)",
+      "Read(**/*.pem)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh approval 'Claude needs approval'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh complete 'Task complete'"
+          },
+          {
+            "type": "command",
+            "command": "python3 '$HOME_PLACEHOLDER/Knowledge-Base/_system/hooks/session-summary.py'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|Read|Bash|Grep|Glob|Task|WebFetch|WebSearch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 '$HOME_PLACEHOLDER/Knowledge-Base/_system/hooks/work-logger.py'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
