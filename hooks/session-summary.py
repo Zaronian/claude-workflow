@@ -7,6 +7,8 @@ This hook is triggered on the Stop event and creates a summary entry
 that consolidates the session's activities.
 """
 
+from __future__ import annotations
+
 import json
 import sys
 import os

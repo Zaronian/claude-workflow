@@ -53,7 +53,7 @@ bash setup.sh --dry-run
 
 - macOS
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed
-- Python 3.10+
+- Python 3.9+
 - `jq` (installer will offer to install via Homebrew)
 - `~/Knowledge-Base/` directory (set up via [kb-setup.sh](https://github.com/Zaronian/kb-setup) or manually)
 

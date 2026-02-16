@@ -7,6 +7,8 @@ This hook is triggered after each tool use and logs relevant activity
 to JSONL files organized by entity and month.
 """
 
+from __future__ import annotations
+
 import json
 import sys
 import os

@@ -272,7 +272,7 @@ Check each business's CLAUDE.md for specific reviewers. General rule:
 ### Development Tools Required:
 - **Homebrew** - Mac package manager (`brew install [package]`)
 - **GitHub CLI** - Authenticated (`gh repo clone [org/repo]`)
-- **Python 3.10+** - For hooks and scripts
+- **Python 3.9+** - For hooks and scripts
 - **jq** - JSON processing for statusline (`brew install jq`)
 - **Git LFS** - Large file storage for binary files in KB repos
 
