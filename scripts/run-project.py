@@ -14,8 +14,8 @@ Usage:
 
 Examples:
     python3 run-project.py burn-app/engineering-excellence
-    python3 run-project.py snowline/some-project --timeout-hours 8
-    python3 run-project.py snowline/some-project --dry-run
+    python3 run-project.py lightswitch/some-project --timeout-hours 8
+    python3 run-project.py lightswitch/some-project --dry-run
 
 Log: ~/.claude/scripts/project-runner.log
 """
@@ -31,7 +31,7 @@ import sys
 import time
 
 KB_DIR = os.path.expanduser(os.environ.get("KB_DIR", "~/Knowledge-Base"))
-WORKLOG_DIR = os.environ.get("KB_WORKLOG_DIR", os.path.join(KB_DIR, "snowline/work-logs"))
+WORKLOG_DIR = os.environ.get("KB_WORKLOG_DIR", os.path.join(KB_DIR, "lightswitch/work-logs"))
 LOG_DIR = os.path.expanduser("~/.claude/scripts")
 LOG_FILE = os.path.join(LOG_DIR, "project-runner.log")
 GATE_FILE = os.path.join(KB_DIR, "_system/active-gate.md")

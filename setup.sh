@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup.sh — Snowline Claude Workflow Kit installer
+# setup.sh — Lightswitch Claude Workflow Kit installer
 #
 # Installs the Claude Code workflow system: CLAUDE.md, hooks, scripts,
 # templates, slash commands, and settings. Safe for both fresh installs

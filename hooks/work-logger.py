@@ -21,7 +21,7 @@ KB_BASE = Path.home() / "Knowledge-Base"
 # Entity detection patterns - maps path patterns to entity names
 ENTITY_PATTERNS = {
     "Knowledge-Base/burn-app": "Burn App",
-    "Knowledge-Base/snowline": "Snowline Consulting",
+    "Knowledge-Base/lightswitch": "Lightswitch Labs",
     "Knowledge-Base/v-school": "V School",
     "Knowledge-Base/smash-creative": "Smash Creative",
     "Knowledge-Base/volley": "Volley",
@@ -54,7 +54,7 @@ def get_work_log_path(entity: str) -> Path:
     """Get the path to the work log file for an entity."""
     entity_to_folder = {
         "Burn App": "burn-app",
-        "Snowline Consulting": "snowline",
+        "Lightswitch Labs": "lightswitch",
         "V School": "v-school",
         "Smash Creative": "smash-creative",
         "Volley": "volley",

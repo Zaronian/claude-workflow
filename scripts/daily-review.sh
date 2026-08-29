@@ -19,7 +19,7 @@ echo "[$(date)] Starting daily review..." >> "${LOG_FILE}"
 # Run Claude to generate the HTML report
 claude -p --permission-mode acceptEdits "You are generating a daily review report. Do the following:
 
-1. Read all work logs from today ($(date +%Y-%m-%d)) in ~/Knowledge-Base/snowline/work-logs/
+1. Read all work logs from today ($(date +%Y-%m-%d)) in ~/Knowledge-Base/lightswitch/work-logs/
 2. Analyze the day's accomplishments across all businesses
 3. Identify patterns - what went well, what could have been better
 4. Suggest specific workflow improvements for tomorrow

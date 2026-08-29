@@ -1,6 +1,6 @@
-# Snowline Claude Workflow Kit
+# Lightswitch Claude Workflow Kit
 
-A complete Claude Code workflow system that transforms ephemeral AI sessions into a structured, trackable, autonomous development practice. Built over 2+ months of daily use at Snowline Consulting.
+A complete Claude Code workflow system that transforms ephemeral AI sessions into a structured, trackable, autonomous development practice. Built over 2+ months of daily use at Lightswitch Labs.
 
 ## What This Is
 

@@ -1,4 +1,4 @@
-# Philosophy: The Snowline Claude Workflow System
+# Philosophy: The Lightswitch Claude Workflow System
 
 This document explains **why** each piece of the workflow exists. Installing the files is the easy part — understanding the system is what makes it work.
 
