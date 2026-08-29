@@ -1,6 +1,6 @@
 # Case Study Generation Command
 
-Generate a case study from work logs for Snowline Consulting marketing.
+Generate a case study from work logs for Lightswitch Labs marketing.
 
 ## Instructions
 
@@ -13,7 +13,7 @@ First, scan the work-logs directories to see which entities have logged work:
 ```bash
 # Check each entity for work logs
 ls -la "burn-app/work-logs/"
-ls -la "snowline/work-logs/"
+ls -la "lightswitch/work-logs/"
 ls -la "v-school/work-logs/"
 ```
 

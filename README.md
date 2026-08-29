@@ -1,6 +1,6 @@
-# Snowline Claude Workflow Kit
+# Lightswitch Claude Workflow Kit
 
-A complete Claude Code workflow system that transforms ephemeral AI sessions into a structured, trackable, autonomous development practice. Built over 2+ months of daily use at Snowline Consulting.
+A complete Claude Code workflow system that transforms ephemeral AI sessions into a structured, trackable, autonomous development practice. Built over 2+ months of daily use at Lightswitch Labs.
 
 ## What This Is
 
@@ -10,9 +10,10 @@ This repo installs a **methodology layer** on top of Claude Code — behavioral 
 
 | Component | Destination | Purpose |
 |-----------|-------------|---------|
-| `CLAUDE.md` | `~/CLAUDE.md` | Behavioral guardrails — when to push forward, when to pause, safety rules |
+| `CLAUDE.md` | `~/CLAUDE.md` | Behavioral guardrails (~80 lines) — secrets, git, safeguards, one-deliverable sessions, gates |
+| `system-guide.md` | `~/Knowledge-Base/_system/reference/` | Detailed procedures the CLAUDE.md points to; loaded on demand, not every session |
 | `settings.json` | `~/.claude/settings.json` | Permissions, hooks, statusline configuration |
-| `/implement` | `~/.claude/commands/` | Full feature implementation workflow (plan → code → test → report) |
+| `/implement` | `~/.claude/commands/` | Feature implementation workflow (code → test → fresh-context review → report) |
 | `/project` | `~/Knowledge-Base/.claude/commands/` | Project lifecycle management (roadmaps, gates, autonomous runner) |
 | `/log-work` | `~/Knowledge-Base/.claude/commands/` | Manual work log review/creation |
 | `/case-study` | `~/Knowledge-Base/.claude/commands/` | Generate case studies from work logs |
@@ -22,7 +23,7 @@ This repo installs a **methodology layer** on top of Claude Code — behavioral 
 | `session-summary.py` | `~/Knowledge-Base/_system/hooks/` | Session summary generation on Claude stop |
 | `statusline.sh` | `~/.claude/statusline.sh` | Model, context %, cost, and git branch in status bar |
 | `daily-review.sh` | `~/.claude/scripts/` | Generate daily HTML work report |
-| `run-project.py` | `~/Knowledge-Base/_system/scripts/` | Autonomous task runner for roadmapped projects |
+| `run-project.py` | `~/Knowledge-Base/_system/scripts/` | Autonomous runner — one long run to the next gate, with a verifier subagent before the gate |
 | `open-roadmap.sh` | `~/Knowledge-Base/_system/scripts/` | Open roadmap in Marked 2 (or default viewer) |
 | 6 templates | `~/Knowledge-Base/_system/Templates/` | Roadmap, brief, work log, case study, ROI, overview |
 | `pre-commit-secrets` | `~/.scratch/hooks/` | Git hook to block accidental secret commits |
@@ -71,6 +72,18 @@ If you already have a `~/CLAUDE.md` or `~/.claude/settings.json`, the installer 
 - **Templates**: Only installed if the file doesn't already exist
 
 Your existing setup is never overwritten.
+
+## What Changed in v2 (August 2026)
+
+Re-tuned for current models (Claude Fable 5 / Opus 4.6+) following Anthropic's guidance that prior-model scaffolding degrades output:
+
+- **CLAUDE.md cut from ~570 to ~80 lines.** Only rules the model can't infer stay always-loaded; procedures moved to `_system/reference/system-guide.md`.
+- **Sessions declare a deliverable, not a type.** Plan, build, test, and review in one sitting when the approach is clear; plan mode is optional.
+- **Runner runs to the gate in one invocation** (multi-hour timeout, `auto` permission mode, trimmed context) and has a fresh-context subagent verify the work before the human gate review.
+- **`/implement` adds an adversarial review step** by a subagent that sees only the diff and the task.
+- **Roadmap template** gains a Project Artifacts table, Session History, and `next_session_deliverable`; drops session-type fields.
+
+Upgrading from v1: rerun `bash setup.sh` (merge mode never overwrites existing files), then diff the new `~/CLAUDE.team.md` and `_system/reference/system-guide.md` against your copies. Existing roadmaps keep working; the runner tolerates the old format.
 
 ## Key Concepts
 

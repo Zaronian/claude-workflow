@@ -10,7 +10,7 @@ When the user runs `/work-summary`, generate a comprehensive overview of recent 
 
 Check each entity's work-logs directory:
 - burn-app/work-logs/
-- snowline/work-logs/
+- lightswitch/work-logs/
 - v-school/work-logs/
 - smash-creative/work-logs/
 - volley/work-logs/

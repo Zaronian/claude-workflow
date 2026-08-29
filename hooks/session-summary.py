@@ -109,7 +109,7 @@ def save_summary(summary: dict) -> None:
         # Map entity name to folder
         entity_to_folder = {
             "Burn App": "burn-app",
-            "Snowline Consulting": "snowline",
+            "Lightswitch Labs": "lightswitch",
             "V School": "v-school",
             "Smash Creative": "smash-creative",
             "Volley": "volley",

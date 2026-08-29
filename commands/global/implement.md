@@ -1,59 +1,11 @@
-# /implement - Full Feature Implementation Workflow
+# /implement - Feature Implementation Workflow
 
-Implement the requested feature following proper software engineering practices.
-
-## Input
-$ARGUMENTS - Description of the feature to implement
+Implement the requested feature end to end: $ARGUMENTS
 
 ## Workflow
 
-Follow these steps in order:
-
-### Step 1: Plan
-- Read relevant existing code to understand the codebase
-- Identify all files that need to be created or modified
-- Consider edge cases and error handling
-- If the change is non-trivial, document the approach before coding
-
-### Step 2: Implement
-- Write clean, focused code that accomplishes the goal
-- Follow existing patterns and conventions in the project
-- Don't over-engineer - make minimal changes needed
-
-### Step 3: Write Tests
-- Create tests for the new functionality
-- Tests should cover:
-  - Happy path (feature works with valid input)
-  - Edge cases (empty data, boundary values)
-  - Error handling (invalid input, not found)
-- Add tests to the project's existing test file or create one if needed
-
-### Step 4: Run Tests
-- Execute the full test suite
-- Check the project's CLAUDE.local.md for the correct test command
-- Common commands: `pytest tests/ -v`, `npm test`, `cargo test`
-- Ensure all tests pass before proceeding
-
-### Step 5: Report Results
-After completing:
-- Summarize what was implemented
-- List files created/modified
-- Report test results (passed/failed)
-- Note any deployment steps needed (check CLAUDE.local.md)
-
-## Example Usage
-
-User: `/implement Add a logout button to the navbar`
-
-Claude will:
-1. Read navbar component to understand structure
-2. Add logout button with appropriate handler
-3. Write test that verifies logout button renders and works
-4. Run test suite
-5. Report: "Added logout button to navbar.html, created test in test_auth.py, all 15 tests passing"
-
-## Important Notes
-
-- Always check for CLAUDE.local.md for project-specific instructions
-- Don't deploy automatically - just report that tests pass
-- If tests fail, fix the issues before reporting completion
+1. **Understand** — Read the relevant code and any `CLAUDE.local.md` (test command, deploy notes). If the project has a decision log, grep its index for the area. Plan only as much as the change needs; if the diff could be described in one sentence, just make it.
+2. **Implement** — Minimal, focused changes that follow the project's existing patterns. No refactors, abstractions, or features beyond the task.
+3. **Test** — Add or update tests for the new behavior (happy path, edge cases, error handling) in the project's existing test layout. Run the full suite with the project's test command. Fix failures before continuing.
+4. **Fresh-context review** — Launch a subagent that sees only the diff and the task description. Ask it to report gaps that affect correctness or the stated requirements (missing cases, untested paths, out-of-scope changes) — not style. Fix real findings; re-run tests.
+5. **Report** — Lead with the outcome. Then: files changed, test results with the actual output, and any deployment steps from `CLAUDE.local.md`. Don't deploy; code repos use branch + PR.
