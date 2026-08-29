@@ -234,10 +234,11 @@ else
         info "Your existing ~/CLAUDE.md was preserved."
         info "Review ~/CLAUDE.team.md and merge relevant sections into ~/CLAUDE.md."
         info "Key sections to consider adding:"
-        info "  - Working Style: Push Forward Autonomously"
-        info "  - Project Lifecycle & Autonomous Execution"
-        info "  - Session End: Mandatory Work Logging"
-        info "  - Structural Safeguards"
+        info "  - Secrets, Git, Safeguards"
+        info "  - Working Style (push forward autonomously)"
+        info "  - Projects & Sessions (one deliverable per session, gates)"
+        info "  - Work Logs, Communication (evidence tiering)"
+        info "The team CLAUDE.md is ~80 lines by design; detail lives in _system/reference/system-guide.md."
     else
         install_file "$SCRIPT_DIR/claude-md/CLAUDE.md" "$HOME_DIR/CLAUDE.md"
     fi
@@ -320,6 +321,9 @@ install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "
 install_if_new "$SCRIPT_DIR/scripts/daily-review.sh" "$CLAUDE_DIR/scripts/daily-review.sh" "+x"
 install_if_new "$SCRIPT_DIR/scripts/run-project.py" "$KB_DIR/_system/scripts/run-project.py" "+x"
 install_if_new "$SCRIPT_DIR/scripts/open-roadmap.sh" "$KB_DIR/_system/scripts/open-roadmap.sh" "+x"
+
+# Reference guide → ~/Knowledge-Base/_system/reference/ (CLAUDE.md points here for detail)
+install_if_new "$SCRIPT_DIR/reference/system-guide.md" "$KB_DIR/_system/reference/system-guide.md"
 
 # --- Component 5: Templates ---
 header "Component 5/6: Templates"

@@ -85,21 +85,23 @@ For non-trivial work, use a multi-layered planning approach:
 
 Use the project brief template to assess: is this Small (just build it), Medium (brief + roadmap), Large (brief + PRD + roadmap + gates), or Strategic (all of the above + research)?
 
-### 2. Plan Mode → Roadmap
+### 2. Roadmap
 
-For Medium+ projects, create a roadmap with phases, tasks, and gates. The roadmap is the single source of truth for project state. It uses machine-readable HTML comments so the autonomous runner can parse it, and human-readable markdown so you can review it in Marked 2.
+For Medium+ projects, create a roadmap with phases, tasks, and gates. The roadmap is the single source of truth for project state — the "project brain." It uses machine-readable HTML comments so the autonomous runner can parse it, and human-readable markdown so you can review it in a viewer.
 
-### 3. Plan Mode → Phase PRD
+### 3. Phase PRD
 
 For Large/Strategic projects, write a PRD for each phase before execution. This captures testing philosophy, source files to modify, design decisions, and acceptance criteria. Claude reads this before starting work, which dramatically reduces wrong turns.
 
-### 4. Plan Mode → Task-Level PRD
+### 4. Execute — one deliverable per session
 
-For complex tasks within a phase, Claude enters plan mode to explore the codebase, identify specific files and line numbers, and design the approach before writing code. This is where you catch architectural mistakes before they're built.
+Each session declares one deliverable and does whatever that deliverable needs: planning, coding, testing, and reviewing can all happen in one sitting. Plan mode is optional — reach for it when the approach is genuinely uncertain, skip it when the diff could be described in one sentence. Current models plan well on their own; the artifacts (roadmap, PRD, CLAUDE.md) carry the context, and your role shifts from generating instructions to reviewing output at gates.
 
-### 5. Execute
+### 5. Verify before the gate
 
-With all the planning done, execution is fast and accurate. Claude has full context: the roadmap tells it what to do, the PRD tells it how to do it, and the CLAUDE.md tells it how to behave. Your role shifts from generating instructions to reviewing output.
+Before a gate, a fresh-context subagent reviews the work against the PRD/phase goal and reports gaps that affect correctness. Self-review by the agent that wrote the code is unreliable; a reviewer that sees only the diff and the spec is not. The runner does this automatically and surfaces the findings in the gate review.
+
+> **Why the kit got thinner in v2 (Aug 2026).** Every component in a workflow encodes an assumption about what the model can't do on its own. The original kit split work into typed sessions (plan → implement → review) and ran one task per short invocation. Current models don't need that decomposition, and long always-loaded rulebooks make the rules that matter get lost. v2 keeps the durable artifacts — roadmap, gates, ADRs, work logs — and cuts the choreography. Revisit this whenever models step up again.
 
 ---
 
@@ -141,12 +143,11 @@ Key mechanics:
 - **Task IDs** — `[phase].[sequence]` format (e.g., 1.4, 2.1). Referenced in session context.
 
 The autonomous runner (`run-project.py`):
-1. Reads the roadmap, finds the `>>>` task
-2. If it's a GATE, writes `_system/active-gate.md` and stops
-3. Otherwise, generates a full prompt with project context, phase info, and linked PRD
-4. Runs `claude -p --permission-mode acceptEdits` with the prompt
-5. Verifies the roadmap was updated (prevents infinite loops)
-6. Moves to the next task, loops until gate or completion
+1. Reads the roadmap, finds the `>>>` task and every task before the next `GATE:`
+2. If `>>>` is already on a GATE, writes `_system/active-gate.md` (with the verifier's findings) and opens a gate-review session
+3. Otherwise, builds a prompt with Session Context, the current phase, and the linked PRD — not the whole roadmap; Claude reads more if it needs to
+4. Runs one long `claude -p --permission-mode auto` invocation (default 4-hour timeout) that works through the batch, updating `>>>` after each task, grounding progress claims in tool results, and running a fresh-context verifier at the gate
+5. Re-invokes only if the run ended early; stops if `>>>` didn't move (stuck), on error, or on timeout
 
 ---
 

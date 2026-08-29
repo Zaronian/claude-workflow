@@ -8,8 +8,8 @@ When the user runs `/log-work`:
 
 ### 1. Check for Existing Entry
 
-Look for an auto-generated work log entry from today in the relevant entity's work-logs directory:
-- `[entity-folder]/work-logs/YYYY-MM-DD-*.md`
+Look for an auto-generated work log entry from today. All work logs live in the practice's KB folder regardless of which business the work was for:
+- `~/Knowledge-Base/snowline/work-logs/YYYY-MM-DD-*.md`
 
 If found, read it and present a summary to the user.
 
@@ -40,8 +40,9 @@ If no auto-generated entry exists for today's session:
 
 **Write the entry** following `_system/Templates/work-log-entry-template.md` to:
 ```
-[entity-folder]/work-logs/YYYY-MM-DD-[slug].md
+~/Knowledge-Base/snowline/work-logs/YYYY-MM-DD-[slug].md
 ```
+(name the business inside the entry), then commit and push to main.
 
 ### 4. Confirmation
 
