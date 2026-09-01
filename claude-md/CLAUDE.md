@@ -66,6 +66,7 @@ Write a work log at the end of every substantive session (produced a deliverable
 - **Tier claims by evidence**: mark each as **Established** (documented/observed), **Plausible** (sound reasoning, thin evidence), or **Inferred** (analogy/judgment). Lead with the strongest. Distinguish "I have data" from "I'm guessing"; ask rather than pad estimates.
 - Don't guess without saying so.
 - Shell commands the user must run: `pbcopy` them. HTML files: `open` in browser after creating.
+- **Questions and review items go in the session, not just in a file.** When work surfaces questions, decisions, or items to review, ask them directly in the session (AskUserQuestion or plain text). Still write them to a markdown file (roadmap Open Questions, a review doc) so they persist across sessions, but never make the user leave the session to go read a file and come back — the file is the record, the session is the interface.
 - Repeated corrections or streamlinable workflows → suggest a CLAUDE.md/skill change at a natural moment.
 
 ## Documentation
