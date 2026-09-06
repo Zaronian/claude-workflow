@@ -323,9 +323,13 @@ install_if_new "$SCRIPT_DIR/hooks/session-summary.py" "$KB_DIR/_system/hooks/ses
 # statusline.sh is kit-owned: replace an older copy that does not persist the
 # status JSON (pacing gauges depend on it); keep a timestamped backup.
 if [[ -f "$CLAUDE_DIR/statusline.sh" ]] && ! grep -q "usage-data" "$CLAUDE_DIR/statusline.sh"; then
-    cp "$CLAUDE_DIR/statusline.sh" "$CLAUDE_DIR/statusline.sh.backup-$(date +%Y%m%d-%H%M%S)"
-    install_file "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
-    info "Replaced ~/.claude/statusline.sh with the gauge-persisting version (backup kept)"
+    if $DRY_RUN; then
+        info "[dry-run] Would replace ~/.claude/statusline.sh with the gauge-persisting version (backup kept)"
+    else
+        cp "$CLAUDE_DIR/statusline.sh" "$CLAUDE_DIR/statusline.sh.backup-$(date +%Y%m%d-%H%M%S)"
+        install_file "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
+        info "Replaced ~/.claude/statusline.sh with the gauge-persisting version (backup kept)"
+    fi
 else
     install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
 fi

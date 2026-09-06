@@ -40,7 +40,7 @@ If no auto-generated entry exists for today's session:
 
 **Write the entry** following `_system/Templates/work-log-entry-template.md` to:
 ```
-~/Knowledge-Base/lightswitch/work-logs/YYYY-MM-DD-[slug].md
+~/Knowledge-Base/<practice>/work-logs/YYYY-MM-DD-<project>.md   (one file per project per day; append a section if it exists)
 ```
 (name the business inside the entry), then commit and push to main.
 

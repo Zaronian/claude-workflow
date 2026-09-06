@@ -1,6 +1,6 @@
 # /loose-ends — Find, finish, or queue what this session left open
 
-Run at the end of every session (before the handoff) and whenever the user asks. Argument `$ARGUMENTS` optional: an business name to limit the scan.
+Run at the end of every session (before the handoff) and whenever the user asks. Argument `$ARGUMENTS` optional: a business name to limit the scan.
 
 ## 1. Find
 
@@ -27,12 +27,12 @@ Items that are doable now but cost real time or budget, or where the user might 
 
 Append every remaining item to the business's queue file:
 - KB businesses: `~/Knowledge-Base/<business>/queue.md` (create from the format below if absent; commit + push to main).
-- Local-only businesses (zaro-family, zaro-holdings, mobile-detailing): `~/Knowledge-Base/<business>/queue.md`.
+- Businesses without a KB repo: the same path, kept locally.
 
 Format — one line per item, newest first under **## Open**; move to **## Done** with the close date when finished:
 
 ```
-- [ ] YYYY-MM-DD · **<what>** — <where/how to pick it up> (<source: project / PR / issue>) [owner: claude|michael] [due: YYYY-MM-DD if dated]
+- [ ] YYYY-MM-DD · **<what>** — <where/how to pick it up> (<source: project / PR / issue>) [owner: claude|user] [due: YYYY-MM-DD if dated]
 ```
 
 Rules: one item per line; the line must be enough to act on cold; never duplicate a roadmap `>>>` task (link to the roadmap instead); parked ideas go to memory or the roadmap's Open Questions, not the queue.

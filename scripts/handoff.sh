@@ -28,6 +28,7 @@ while [ $# -gt 0 ]; do
 done
 [ -z "$SESSION" ] && SESSION="unknown-$(date +%Y%m%d-%H%M%S)"
 case "$SESSION" in *[!A-Za-z0-9._-]*) echo "invalid session id (allowed: A-Z a-z 0-9 . _ -): $SESSION" >&2; exit 2 ;; esac
+case "$PROJECT" in *$'\n'*) echo "project must be a single line" >&2; exit 2 ;; esac
 case "$KIND" in handoff|need-from-you|command|note) ;; *) echo "kind must be handoff|need-from-you|command|note" >&2; exit 2 ;; esac
 
 ROOT="$HOME/.claude/handoffs"
