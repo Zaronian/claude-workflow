@@ -63,6 +63,7 @@ Size by how many human approval points the work needs, not by session count:
 - **Declare the current deliverable** at the start (and again each time you pull the next one) with a 2–3 sentence bigger picture. Plan and implement in the same pass when the approach is clear; use plan mode only when the approach is genuinely uncertain. If work outside the deliverable surfaces, note it in the roadmap (Open Questions / future task) rather than doing it in-place.
 - **Gates** (`GATE:` items) force a human pause at phase boundaries, before production deploys, and after outputs that need judgment. Defer a gate that can't fire yet; never redefine it weaker.
 - **Checkpoint** after every deliverable: roadmap (`[x]`, `>>>`, Session Context, Artifacts, Session History), append to the day's work log (one file per project per day), ADR if a design commitment was made, commit + push KB. **Handoff** (roadmap + work log + handoff prompt: deliverable, bigger picture, doc paths, `>>>` task) only when the session ends, the business switches, or the user asks — through `handoff.sh` (see Communication) and say "It's on your clipboard."
+- **Loose ends**: before every handoff run `/loose-ends` — scan open PRs, uncommitted work, pending deploys/migrations, unanswered "Need from you" items, owed docs/ADRs, dated follow-ups; finish what the rules allow; ask the user once ("do now or queue?") only where it is a real choice; queue the rest in the business's `queue.md` (`~/Knowledge-Base/<business>/queue.md`). Read the queue's **## Open** at session start.
 - `/project new|status|start|end|gate|run` manages the lifecycle. Templates: `~/Knowledge-Base/_system/Templates/`.
 
 ## Decision Logs (ADRs)
@@ -71,7 +72,7 @@ Projects may keep an append-only ADR log (`decisions/index.md`). **Read the inde
 
 ## Work Logs
 
-Write a work log at the end of every substantive session (produced a deliverable, made a decision, solved a problem, advanced a project) to the practice's `work-logs/YYYY-MM-DD-[slug].md` using `_system/Templates/work-log-entry-template.md`, naming the business inside. Push to main. Draft the strategic-context section yourself; ask the user the strategic questions only at project milestones. Rates: $35/hr research/admin/planning, $75/hr coding/debugging.
+Keep one work log per project per day at the practice's `work-logs/YYYY-MM-DD-<project>.md` (template `_system/Templates/work-log-entry-template.md`), naming the business inside; append a section at every checkpoint and at session end for any substantive work (produced a deliverable, made a decision, solved a problem, advanced a project). Push to main. Draft the strategic-context section yourself; ask the user the strategic questions only at project milestones. Rates: $35/hr research/admin/planning, $75/hr coding/debugging.
 
 ## Communication
 
@@ -89,3 +90,4 @@ After installing tools, cloning repos, changing folder structure, adding credent
 - `/implement <feature>` — plan → code → tests → fresh-context review → report.
 - `/pr-review <PR#|branch>` — fresh-context merge gate: correctness, authz, tests, ADR compliance, scope → PASS or CHANGES. Required before any merge.
 - `/handoff [session|business/project|index]` — re-surface the last thing a session copied for the user (from `~/.claude/handoffs/`).
+- `/loose-ends [business]` — find what the session left open; finish, ask once, or queue in `<business>/queue.md`. Runs before every handoff.

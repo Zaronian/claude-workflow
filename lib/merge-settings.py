@@ -107,9 +107,14 @@ def merge_settings(existing: dict, base: dict) -> dict:
         existing_hooks = merged.get("hooks", {})
         merged["hooks"] = merge_hooks(existing_hooks, base["hooks"])
 
-    # Add statusLine only if not configured
-    if "statusLine" in base and "statusLine" not in merged:
-        merged["statusLine"] = base["statusLine"]
+    # Add statusLine only if not configured; on an existing block only add
+    # refreshInterval (pacing gauges need the file refreshed while idle).
+    if "statusLine" in base:
+        if "statusLine" not in merged:
+            merged["statusLine"] = base["statusLine"]
+        elif isinstance(merged["statusLine"], dict) and "refreshInterval" in base["statusLine"] \
+                and "refreshInterval" not in merged["statusLine"]:
+            merged["statusLine"]["refreshInterval"] = base["statusLine"]["refreshInterval"]
 
     # NEVER touch model preference
 

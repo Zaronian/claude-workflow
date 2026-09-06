@@ -1,6 +1,6 @@
 # Log Work Command (Manual Override)
 
-Work logs are now written automatically by Claude at session end. This command exists for reviewing, adjusting, or supplementing an auto-generated entry.
+Work logs are written automatically by Claude at every checkpoint and at session end (one file per project per day). This command exists for reviewing, adjusting, or supplementing an auto-generated entry.
 
 ## Instructions
 

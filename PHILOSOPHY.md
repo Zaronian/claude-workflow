@@ -32,7 +32,7 @@ Everything else — running tests, making commits, searching the web, executing 
 
 **Gather credentials upfront.** Nothing kills momentum like discovering you need an API key mid-implementation. The CLAUDE.md instructs Claude to audit the full task for every dependency before starting execution, present the complete list, and let you gather them while it works on parts that don't need credentials.
 
-**Session handoffs.** Claude proactively recognizes natural breakpoints (planning → building shift, heavy context window, entity/project switch) and suggests ending the session with a prompt ready for the next one. This prevents the degraded performance that comes from overloaded context windows.
+**Continuous loop with measured handoffs.** The unit of work is the deliverable: Claude checkpoints after each one and pulls the next. It hands off — with a prompt ready for the next session — at a gate, a project switch, or when the context or usage gauges say so (the statusline persists them). This prevents the degraded performance that comes from overloaded context windows without stopping after every deliverable.
 
 **Safety as a system, not a prompt.** Instead of hoping Claude remembers to be careful, the CLAUDE.md defines structural safeguards: always check `git status` before destructive operations, never force-push to main, backup databases before modification. These are always-on — not things you need to remember to ask for.
 
@@ -93,7 +93,7 @@ For Medium+ projects, create a roadmap with phases, tasks, and gates. The roadma
 
 For Large/Strategic projects, write a PRD for each phase before execution. This captures testing philosophy, source files to modify, design decisions, and acceptance criteria. Claude reads this before starting work, which dramatically reduces wrong turns.
 
-### 4. Execute — one deliverable per session
+### 4. Execute — one deliverable at a time
 
 Each session declares one deliverable and does whatever that deliverable needs: planning, coding, testing, and reviewing can all happen in one sitting. Plan mode is optional — reach for it when the approach is genuinely uncertain, skip it when the diff could be described in one sentence. Current models plan well on their own; the artifacts (roadmap, PRD, CLAUDE.md) carry the context, and your role shifts from generating instructions to reviewing output at gates.
 

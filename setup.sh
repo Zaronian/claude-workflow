@@ -236,9 +236,9 @@ else
         info "Key sections to consider adding:"
         info "  - Secrets, Git, Safeguards"
         info "  - Working Style (push forward autonomously)"
-        info "  - Projects & Sessions (one deliverable per session, gates)"
+        info "  - Projects & Sessions (continuous deliverable loop, gates)"
         info "  - Work Logs, Communication (evidence tiering)"
-        info "The team CLAUDE.md is ~80 lines by design; detail lives in _system/reference/system-guide.md."
+        info "The team CLAUDE.md is ~95 lines by design; detail lives in _system/reference/system-guide.md."
     else
         install_file "$SCRIPT_DIR/claude-md/CLAUDE.md" "$HOME_DIR/CLAUDE.md"
     fi
@@ -300,6 +300,7 @@ header "Component 3/6: Slash Commands"
 install_if_new "$SCRIPT_DIR/commands/global/implement.md" "$CLAUDE_DIR/commands/implement.md"
 install_if_new "$SCRIPT_DIR/commands/global/pr-review.md" "$CLAUDE_DIR/commands/pr-review.md"
 install_if_new "$SCRIPT_DIR/commands/global/handoff.md" "$CLAUDE_DIR/commands/handoff.md"
+install_if_new "$SCRIPT_DIR/commands/global/loose-ends.md" "$CLAUDE_DIR/commands/loose-ends.md"
 
 # Project commands → ~/Knowledge-Base/.claude/commands/
 KB_CMD_DIR="$KB_DIR/.claude/commands"
@@ -319,7 +320,15 @@ install_if_new "$SCRIPT_DIR/hooks/work-logger.py" "$KB_DIR/_system/hooks/work-lo
 install_if_new "$SCRIPT_DIR/hooks/session-summary.py" "$KB_DIR/_system/hooks/session-summary.py" "+x"
 
 # Scripts → various locations
-install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
+# statusline.sh is kit-owned: replace an older copy that does not persist the
+# status JSON (pacing gauges depend on it); keep a timestamped backup.
+if [[ -f "$CLAUDE_DIR/statusline.sh" ]] && ! grep -q "usage-data" "$CLAUDE_DIR/statusline.sh"; then
+    cp "$CLAUDE_DIR/statusline.sh" "$CLAUDE_DIR/statusline.sh.backup-$(date +%Y%m%d-%H%M%S)"
+    install_file "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
+    info "Replaced ~/.claude/statusline.sh with the gauge-persisting version (backup kept)"
+else
+    install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
+fi
 install_if_new "$SCRIPT_DIR/scripts/daily-review.sh" "$CLAUDE_DIR/scripts/daily-review.sh" "+x"
 install_if_new "$SCRIPT_DIR/scripts/run-project.py" "$KB_DIR/_system/scripts/run-project.py" "+x"
 install_if_new "$SCRIPT_DIR/scripts/open-roadmap.sh" "$KB_DIR/_system/scripts/open-roadmap.sh" "+x"

@@ -31,6 +31,8 @@ If no argument or "help", show the subcommands summary at the bottom and stop.
 
 ### `start [entity/project]` — Load Project Context
 
+0. Read the business's queue (`~/Knowledge-Base/<business>/queue.md` **## Open**) — short by design; surface anything relevant to the deliverable.
+
 1. Find the roadmap at `~/Knowledge-Base/[entity]/projects/[project]/[project]-roadmap.md` (fallback `~/Knowledge-Base/[entity]/[project]/...`)
 2. Read the Session Context (HTML block + human section) and the **current phase section** — not the whole roadmap; read further only if needed
 3. Read `next_session_docs` and any linked PRD for the current phase
@@ -50,6 +52,7 @@ Use when the session is actually ending (continuous mode otherwise checkpoints a
 4. Commit the roadmap (KB repos push to main directly)
 5. If the session made a design commitment and the project has a decision log, write the ADR
 6. Write the work log (draft strategic context yourself; ask the strategic questions only at milestones)
+6b. Run `/loose-ends` — finish what the rules allow, ask once where it is a real choice, queue the rest in `<business>/queue.md`
 7. Generate the handoff prompt — next deliverable, 2-3 sentences of bigger picture, docs to read, the `>>>` task — pipe it through `~/Knowledge-Base/_system/scripts/handoff.sh handoff <entity/project>` (pbcopy + `~/.claude/handoffs/`), show it, and say "It's on your clipboard."
 
 ### `gate` — Review a Pending Quality Gate

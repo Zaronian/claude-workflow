@@ -9,8 +9,8 @@ Every session writes whatever it `pbcopy`s for the user (handoff prompts, "Need 
 1. Pick the file:
    - no argument → `~/.claude/handoffs/latest.md`
    - `index` → print `~/.claude/handoffs/index.md` (one line per session: id · project · kind · written) and stop
-   - a session id → `~/.claude/handoffs/sessions/<id>.md`
-   - an `business/project` → the newest `sessions/*.md` whose `project:` header matches
+   - a session id → `~/.claude/handoffs/sessions/<id>.md` (its latest item; every earlier item is in `sessions/<id>.history.md`, `---`-separated, if an older "Need from you" block is wanted)
+   - an `business/project` → the newest `sessions/*.md` (not `*.history.md`) whose `project:` header matches
 2. Print the file's body verbatim (after the header block), then re-copy the body to the clipboard:
    `tail -n +7 <file> | pbcopy` (the header is exactly six lines: `session`, `project`, `cwd`, `written`, `kind`, blank).
 3. Say "It's on your clipboard." and, in one line, which session and when it was written.

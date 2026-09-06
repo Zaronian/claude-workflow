@@ -1,6 +1,6 @@
 # /pr-review — Fresh-context merge gate
 
-Review $ARGUMENTS (a PR number or a branch) with eyes that did not write it. This is the merge condition for every code repo: **full test suite green + PASS here → merge, deploy, verify, tell the user.** the user does not review PRs by hand.
+Review $ARGUMENTS (a PR number or a branch) with eyes that did not write it. This is the merge condition for every code repo: **full test suite green + PASS here → merge, deploy, verify, tell the user.** The user does not review PRs by hand.
 
 ## Steps
 
@@ -11,7 +11,7 @@ Review $ARGUMENTS (a PR number or a branch) with eyes that did not write it. Thi
    - `CLAUDE.local.md` test/deploy notes if present
 2. **Run the reviewer as a fresh subagent** (general-purpose, no conversation context, read-only). Ask it to report only findings that matter, in this order, each with `file:line`, what fails, and how to see it fail:
    - **Correctness** — wrong behaviour, unhandled failure, data loss, race, silent fallback.
-   - **Authorization / security** — an endpoint or write reachable outside the project's authz model (Super System: ADR-067/072/073); secrets in the diff; injection.
+   - **Authorization / security** — an endpoint or write reachable outside the project's authz model (the project's authz ADRs, if any); secrets in the diff; injection.
    - **Tests** — untested paths for the new behaviour; tests that would pass without the change.
    - **ADR compliance** — contradicts an accepted ADR without a superseding one; a design commitment made without an ADR.
    - **Scope** — changes not needed for the task.
