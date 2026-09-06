@@ -298,6 +298,8 @@ header "Component 3/6: Slash Commands"
 
 # Global commands → ~/.claude/commands/
 install_if_new "$SCRIPT_DIR/commands/global/implement.md" "$CLAUDE_DIR/commands/implement.md"
+install_if_new "$SCRIPT_DIR/commands/global/pr-review.md" "$CLAUDE_DIR/commands/pr-review.md"
+install_if_new "$SCRIPT_DIR/commands/global/handoff.md" "$CLAUDE_DIR/commands/handoff.md"
 
 # Project commands → ~/Knowledge-Base/.claude/commands/
 KB_CMD_DIR="$KB_DIR/.claude/commands"
@@ -321,6 +323,7 @@ install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "
 install_if_new "$SCRIPT_DIR/scripts/daily-review.sh" "$CLAUDE_DIR/scripts/daily-review.sh" "+x"
 install_if_new "$SCRIPT_DIR/scripts/run-project.py" "$KB_DIR/_system/scripts/run-project.py" "+x"
 install_if_new "$SCRIPT_DIR/scripts/open-roadmap.sh" "$KB_DIR/_system/scripts/open-roadmap.sh" "+x"
+install_if_new "$SCRIPT_DIR/scripts/handoff.sh" "$KB_DIR/_system/scripts/handoff.sh" "+x"
 
 # Reference guide → ~/Knowledge-Base/_system/reference/ (CLAUDE.md points here for detail)
 install_if_new "$SCRIPT_DIR/reference/system-guide.md" "$KB_DIR/_system/reference/system-guide.md"

@@ -20,7 +20,7 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 ## Git
 
 - **KB repos push directly to main** — no branches, no PRs. Committing and pushing work logs, case studies, roadmaps, and project docs at session end is pre-authorized. Keep commits focused. Pre-commit hooks block secrets.
-- **Code repos use branch + PR** (`feature/`, `fix/`, `docs/`, `refactor/`). Commit only when asked. Check the business CLAUDE.md for reviewers.
+- **Code repos use branch + PR** (`feature/`, `fix/`, `docs/`, `refactor/`). Commit and open a PR when a step is done. **Merge condition = full test suite green + `/pr-review` PASS** (fresh-context review). When both hold: merge, deploy (deploys are fine; additive schema migrations are part of a deploy), verify live, note the deploy in the project's checklist/roadmap, and tell the user in one paragraph. A review that fails twice after fixes → stop and ask. Destructive migrations, data rewrites, and anything touching production *data* still pause.
 - Never `git push --force` to main. Never `git reset --hard` without confirming uncommitted work is saved. Run `git status` first.
 
 ## Safeguards
@@ -30,9 +30,21 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 - **Production data changes: always pause first** (deploys are fine). Test locally/staging first; have a rollback plan.
 - **Always get explicit confirmation before modifying `~/.claude/settings.json`, permissions, or CLAUDE.md workflow rules.**
 
+## Orchestration (subagents)
+
+- **Default is single-session sequential work.** Use background subagents only for an independent build step with a written brief and a test-based exit condition — never for research/exploration, never a workflow fan-out.
+- **Cap: two background agents at a time** — standing allowance, no per-launch approval. Before launching, state the rough cost in session-equivalents and check the remaining session budget (Pacing & budget). The user can stop any agent at any time.
+- **Bounded brief** (required): goal; definition of done (tests/commands); files/dirs in scope; constraints (ADRs, patterns); its own worktree; report format (≤1 page: outcome, evidence, PR link, open questions); **stop conditions** — stop and report if tests fail after two attempts, if a decision is needed, or if the approach changes.
+- The orchestrator (main session) holds gates, ADRs, roadmap, merges, and deploys. Relay every report; nothing an agent finds reaches the user otherwise.
+- **When parallel work would clearly pay for itself, say so** with a cost estimate; the user decides.
+
 ## Working Style
 
 Push forward autonomously; finish end-to-end (migrations, data population, setup included). Pause only for: irreversible or production-data actions, real design decisions where preference matters, genuinely ambiguous requirements, or settings/permissions/CLAUDE.md changes. When pausing, say *why*. Don't build admin buttons or manual steps that require user action when it can be automated.
+
+**Continuous mode.** Work one deliverable at a time; when it lands, checkpoint (roadmap `>>>`, work-log append) and start the next `>>>` item without waiting. Stop only at a `GATE:`, a decision only the user can make, a human-only action, or a budget check. When blocked on the user: post a "Need from you" block in the session (numbered, click-by-click), then continue on the next unblocked roadmap item — another phase, another project in the same business, or a parallel item. If a block resolves with time (a deploy has to soak), schedule a wakeup and keep going rather than ending. Produce a handoff prompt only when the session actually ends or the user asks. Demo progress at gates: what changed, evidence it works, what the gate decides.
+
+**Pacing & budget.** At every checkpoint read `~/.claude/usage-data/sessions/$CLAUDE_CODE_SESSION_ID.json` (written by the statusline). Context < 50 % → continue. 50–70 % → finish + checkpoint, continue only if the next deliverable uses the files already loaded, else hand off. ≥ 70 % → checkpoint + hand off, always (auto-compaction = pacing failure). New session regardless on business/project switch, after a GATE approval, or after ~1 h idle. 5-hour meter ≥ 80 % or 7-day ≥ 85 % → no new agents, finish the current deliverable, checkpoint, pause until `resets_at` and say so.
 
 When something is found mid-work (bug, missing auth check, architectural concern) **file a GitHub issue in the relevant code repo immediately** — conversation summaries are not tracking.
 
@@ -48,9 +60,9 @@ Size by how many human approval points the work needs, not by session count:
 | **Strategic** | Large + research/discovery phase | Brief + research + PRD + phased roadmap |
 
 - The **roadmap is the project brain** (`>>>` current task, `GATE:` items, Session Context, Artifacts, Session History). Read the Session Context + current phase at session start; link the rest. Update it before ending.
-- **Declare ONE deliverable per session** at the start and state the bigger picture in 2–3 sentences. Plan and implement in the same session when the approach is clear; use plan mode only when the approach is genuinely uncertain. If work outside the deliverable surfaces, note it in the roadmap (Open Questions / future task) rather than doing it in-place.
+- **Declare the current deliverable** at the start (and again each time you pull the next one) with a 2–3 sentence bigger picture. Plan and implement in the same pass when the approach is clear; use plan mode only when the approach is genuinely uncertain. If work outside the deliverable surfaces, note it in the roadmap (Open Questions / future task) rather than doing it in-place.
 - **Gates** (`GATE:` items) force a human pause at phase boundaries, before production deploys, and after outputs that need judgment. Defer a gate that can't fire yet; never redefine it weaker.
-- **Handoff**: when the deliverable is done, the context is heavy, or the business/project switches — update the roadmap, write the work log, and produce a handoff prompt (deliverable, bigger picture, doc paths, `>>>` task). `pbcopy` it and say "It's on your clipboard."
+- **Checkpoint** after every deliverable: roadmap (`[x]`, `>>>`, Session Context, Artifacts, Session History), append to the day's work log (one file per project per day), ADR if a design commitment was made, commit + push KB. **Handoff** (roadmap + work log + handoff prompt: deliverable, bigger picture, doc paths, `>>>` task) only when the session ends, the business switches, or the user asks — through `handoff.sh` (see Communication) and say "It's on your clipboard."
 - `/project new|status|start|end|gate|run` manages the lifecycle. Templates: `~/Knowledge-Base/_system/Templates/`.
 
 ## Decision Logs (ADRs)
@@ -65,7 +77,7 @@ Write a work log at the end of every substantive session (produced a deliverable
 
 - **Tier claims by evidence**: mark each as **Established** (documented/observed), **Plausible** (sound reasoning, thin evidence), or **Inferred** (analogy/judgment). Lead with the strongest. Distinguish "I have data" from "I'm guessing"; ask rather than pad estimates.
 - Don't guess without saying so.
-- Shell commands the user must run: `pbcopy` them. HTML files: `open` in browser after creating.
+- **Everything copied for the user goes through `~/Knowledge-Base/_system/scripts/handoff.sh <kind> <business/project>`** (kinds: handoff, need-from-you, command, note; body on stdin) — it pbcopys AND stores it under `~/.claude/handoffs/` so `/handoff` can re-surface it after the clipboard is overwritten. HTML files: `open` in browser after creating.
 - Repeated corrections or streamlinable workflows → suggest a CLAUDE.md/skill change at a natural moment.
 
 ## Documentation
@@ -75,3 +87,5 @@ After installing tools, cloning repos, changing folder structure, adding credent
 ## Skills
 
 - `/implement <feature>` — plan → code → tests → fresh-context review → report.
+- `/pr-review <PR#|branch>` — fresh-context merge gate: correctness, authz, tests, ADR compliance, scope → PASS or CHANGES. Required before any merge.
+- `/handoff [session|business/project|index]` — re-surface the last thing a session copied for the user (from `~/.claude/handoffs/`).

@@ -42,13 +42,15 @@ If no argument or "help", show the subcommands summary at the bottom and stop.
 
 ### `end` — Wrap Up Current Session
 
+Use when the session is actually ending (continuous mode otherwise checkpoints and pulls the next `>>>` — see `~/CLAUDE.md` § Working Style).
+
 1. Find the active roadmap
 2. **Verify the deliverable** was produced; point to evidence (test output, files, commands run)
 3. Update the roadmap: mark `[x]`, move `>>>`, update SESSION-CONTEXT (`last_session_date`, `next_task`, `next_session_deliverable`, `next_session_docs`, `blockers`, `notes`) and the human Session Context, update Progress counts, register new docs in Project Artifacts, add a Session History row
 4. Commit the roadmap (KB repos push to main directly)
 5. If the session made a design commitment and the project has a decision log, write the ADR
 6. Write the work log (draft strategic context yourself; ask the strategic questions only at milestones)
-7. Generate the handoff prompt — next deliverable, 2-3 sentences of bigger picture, docs to read, the `>>>` task — `pbcopy` it, show it, and say "It's on your clipboard."
+7. Generate the handoff prompt — next deliverable, 2-3 sentences of bigger picture, docs to read, the `>>>` task — pipe it through `~/Knowledge-Base/_system/scripts/handoff.sh handoff <entity/project>` (pbcopy + `~/.claude/handoffs/`), show it, and say "It's on your clipboard."
 
 ### `gate` — Review a Pending Quality Gate
 
