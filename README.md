@@ -87,7 +87,7 @@ Re-tuned for current models (Claude Fable 5 / Opus 4.6+) following Anthropic's g
 - **`/implement` adds an adversarial review step** by a subagent that sees only the diff and the task.
 - **Roadmap template** gains a Project Artifacts table, Session History, and `next_session_deliverable`; drops session-type fields.
 
-Upgrading: rerun `bash setup.sh` (merge mode never overwrites existing files), then diff the new `~/CLAUDE.team.md` and `_system/reference/system-guide.md` against your copies. Existing roadmaps keep working; the runner tolerates the old format. **Pacing gauges need two extra steps on an existing install:** setup.sh replaces an old `~/.claude/statusline.sh` that does not yet persist the status JSON (a timestamped backup is kept), and adds `refreshInterval: 30` to an existing `statusLine` block — check both happened, otherwise `~/.claude/usage-data/` is never written and the pacing rule in CLAUDE.md fails silently.
+Upgrading: rerun `bash setup.sh` (merge mode never overwrites existing files), then diff the new `~/CLAUDE.team.md` and `_system/reference/system-guide.md` against your copies. Existing roadmaps keep working; the runner tolerates the old format. **Pacing gauges need two extra steps on an existing install:** setup.sh replaces an old `~/.claude/statusline.sh` that does not yet persist the status JSON (a timestamped backup is kept) and creates `~/.claude/usage-data/statusline/` (persistence is opt-in by that directory existing) — check both happened, otherwise the pacing rule in CLAUDE.md fails silently.
 
 ## Key Concepts
 

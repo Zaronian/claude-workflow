@@ -333,6 +333,8 @@ if [[ -f "$CLAUDE_DIR/statusline.sh" ]] && ! grep -q "usage-data" "$CLAUDE_DIR/s
 else
     install_if_new "$SCRIPT_DIR/scripts/statusline.sh" "$CLAUDE_DIR/statusline.sh" "+x"
 fi
+# Persistence of the status JSON is opt-in by this directory existing.
+$DRY_RUN || mkdir -p "$HOME/.claude/usage-data/statusline"
 install_if_new "$SCRIPT_DIR/scripts/daily-review.sh" "$CLAUDE_DIR/scripts/daily-review.sh" "+x"
 install_if_new "$SCRIPT_DIR/scripts/run-project.py" "$KB_DIR/_system/scripts/run-project.py" "+x"
 install_if_new "$SCRIPT_DIR/scripts/open-roadmap.sh" "$KB_DIR/_system/scripts/open-roadmap.sh" "+x"

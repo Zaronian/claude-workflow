@@ -29,7 +29,7 @@ Declare → Execute → Deliver (tests + /pr-review PASS) → Merge + deploy + v
 
 ### Pacing & budget gauges
 
-`~/.claude/statusline.sh` writes Claude Code's status JSON to `~/.claude/usage-data/sessions/<session_id>.json` (and `latest.json`) on every event and every 30 s (`refreshInterval`); the session id is `$CLAUDE_CODE_SESSION_ID`. Read it at every checkpoint:
+`~/.claude/statusline.sh` writes Claude Code's status JSON to `~/.claude/usage-data/statusline/sessions/<session_id>.json` (and `latest.json`) on every status-line event, opt-in by the directory existing; values are as of the session's most recent API response (`written_at` = write time). The session id is `$CLAUDE_CODE_SESSION_ID` (observed in the Bash tool, not in the documented env vars); a subagent inherits the parent's id and must NOT pace on this file (`CLAUDE_CODE_CHILD_SESSION=1`). Read it at every checkpoint:
 
 | Gauge | Rule |
 |---|---|
