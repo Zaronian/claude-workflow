@@ -20,7 +20,7 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 ## Git
 
 - **KB repos push directly to main** — no branches, no PRs. Committing and pushing work logs, case studies, roadmaps, and project docs at session end is pre-authorized. Keep commits focused. Pre-commit hooks block secrets.
-- **Code repos use branch + PR** (`feature/`, `fix/`, `docs/`, `refactor/`). Commit and open a PR when a step is done. **Merge condition = full test suite green + `/pr-review` PASS** (fresh-context review). When both hold: merge, deploy (deploys are fine; additive schema migrations are part of a deploy), verify live, note the deploy in the project's checklist/roadmap, and tell the user in one paragraph. A review that fails twice after fixes → stop and ask. Destructive migrations, data rewrites, and anything touching production *data* still pause.
+- **Code repos use branch + PR** (`feat/` or `feature/`, `fix/`, `docs/`, `refactor/`). Commit and open a PR when a step is done. **Merge condition = full test suite green + `/pr-review` PASS** (fresh-context review). When both hold: merge, deploy (deploys are fine; additive schema migrations are part of a deploy), verify live, note the deploy in the project's checklist/roadmap, and tell the user in one paragraph. A review that fails twice after fixes → stop and ask. Destructive migrations, data rewrites, and anything touching production *data* still pause.
 - Never `git push --force` to main. Never `git reset --hard` without confirming uncommitted work is saved. Run `git status` first.
 
 ## Safeguards
