@@ -18,7 +18,7 @@ The unit of work is the **deliverable**, not the session. A session runs this lo
 Declare → Execute → Deliver (tests + /pr-review PASS) → Merge + deploy + verify → Checkpoint (roadmap, work-log append, ADR) → pull the next `>>>` → …
 ```
 
-1. **Declare** — Read the roadmap's Session Context and the current phase (not the whole file; link the rest). State the deliverable and a 2–3 sentence bigger picture. Repeat each time the next `>>>` is pulled.
+1. **Declare** — Read the business's `company.md` (facts; check it is the KB owner's session before writing to the KB), then the roadmap's Session Context and the current phase (not the whole file; link the rest). State the deliverable and a 2–3 sentence bigger picture. Repeat each time the next `>>>` is pulled.
 2. **Execute** — Whatever the deliverable needs. Plan mode only when the approach is genuinely uncertain; if the diff could be described in one sentence, skip planning. Work outside the deliverable → roadmap Open Questions / future task, not in-place.
 3. **Deliver** — Evidence it works (test output, a running command, a screenshot). Code: full suite green + `/pr-review` PASS is the merge condition; then merge, deploy (additive migrations included), verify live, note the deploy in the project's checklist/roadmap, tell the user in one paragraph. Two CHANGES verdicts → stop and ask.
 4. **Checkpoint** — Mark `[x]`, move `>>>`, update Session Context (HTML block + human section), Progress table, **Project Artifacts**, **Session History**; append to the day's work log (`work-logs/YYYY-MM-DD-<project>.md`, one file per project per day, one section per deliverable); ADR if a design commitment was made; commit + push the KB.
@@ -97,7 +97,7 @@ Work logs and case studies live in the practice's KB folder (e.g. `~/Knowledge-B
 
 ## Documentation Maintenance
 
-Update after: new tools installed, repos cloned, folder-structure changes, new credentials, new team members/processes, project status changes. Candidates: `~/CLAUDE.md`, `~/Knowledge-Base/[business]/CLAUDE.md`, project READMEs.
+Update after: new tools installed, repos cloned, folder-structure changes, new credentials, new team members/processes, project status changes. **Facts go in `~/Knowledge-Base/[business]/company.md`** (bump its verified date); project READMEs for structure and usage. `~/CLAUDE.md` and `~/Knowledge-Base/[business]/CLAUDE.md` change only when a rule changes — never restate company.md facts there.
 
 README needed for: automation/scripts/multi-file systems, multi-step workflows, cross-session work, new multi-file directories. Not needed for single-file obvious scripts or temporary work.
 
