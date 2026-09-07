@@ -247,7 +247,7 @@ Then leave `>>>` on {gate_ref} and end your turn.
 - Before reporting progress, audit each claim against a tool result from this session. Only report work you can point to evidence for; if something is not yet verified, say so. If tests fail, say so with the output; if a step was skipped, say that.
 - Pause for the user only when the work genuinely requires it: a destructive or irreversible action, a real scope change, or input only they can provide. If you hit one, write it into the roadmap's `blockers:` field and Open Questions, leave `>>>` where it is, and end the turn.
 - If a task is impossible as written, note why in the roadmap (Open Questions), leave it unchecked, move `>>>` past it, and continue.
-- At the end, write one work log entry to `{WORKLOG_DIR}/YYYY-MM-DD-[slug].md` following `{KB_DIR}/_system/Templates/work-log-entry-template.md`, covering the whole run.
+- After each task, append a section to the day's work log `{WORKLOG_DIR}/YYYY-MM-DD-<project>.md` (create it from `{KB_DIR}/_system/Templates/work-log-entry-template.md` if absent; one file per project per day).
 {gate_instructions}
 ## Context
 

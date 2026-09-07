@@ -10,13 +10,50 @@ Detailed companion to `~/CLAUDE.md`. The global CLAUDE.md holds behavioral rules
 
 Sessions are organized around a **deliverable**, not a session *type*. A session may plan, write a PRD, code, test, and review in one sitting if the deliverable needs it. (Earlier versions of this kit used a six-type session taxonomy with hard boundaries; that was scaffolding for older models and is retired.)
 
-### Session Lifecycle
+### The Continuous Loop
 
-1. **Declare** — Read the roadmap's Session Context and the current phase (not the whole file; link the rest). State the one deliverable this session will produce and a 2–3 sentence bigger picture (project status, current phase, what comes after).
-2. **Execute** — Do whatever the deliverable needs. Use plan mode only when the approach is genuinely uncertain; if the diff could be described in one sentence, skip planning. If work outside the deliverable surfaces (scope creep, a PRD issue, a new idea), note it in the roadmap's Open Questions or as a future task rather than doing it in-place.
-3. **Deliver** — Produce the deliverable and show evidence it works (test output, a running command, a screenshot). Before declaring done on non-trivial code, have a fresh-context subagent review the diff against the plan/PRD for gaps that affect correctness.
-4. **Update Roadmap** — Mark completed tasks `[x]`, move `>>>`, update Session Context (both the HTML block and the human section), update the Progress table, register new docs in **Project Artifacts**, add a **Session History** row. Commit.
-5. **Handoff** — When ending: a handoff prompt naming the next deliverable, 2–3 sentences of bigger picture, the docs to read, and the current `>>>` task. `pbcopy` it.
+The unit of work is the **deliverable**, not the session. A session runs this loop until a stop condition fires:
+
+```
+Declare → Execute → Deliver (tests + /pr-review PASS) → Merge + deploy + verify → Checkpoint (roadmap, work-log append, ADR) → pull the next `>>>` → …
+```
+
+1. **Declare** — Read the roadmap's Session Context and the current phase (not the whole file; link the rest). State the deliverable and a 2–3 sentence bigger picture. Repeat each time the next `>>>` is pulled.
+2. **Execute** — Whatever the deliverable needs. Plan mode only when the approach is genuinely uncertain; if the diff could be described in one sentence, skip planning. Work outside the deliverable → roadmap Open Questions / future task, not in-place.
+3. **Deliver** — Evidence it works (test output, a running command, a screenshot). Code: full suite green + `/pr-review` PASS is the merge condition; then merge, deploy (additive migrations included), verify live, note the deploy in the project's checklist/roadmap, tell the user in one paragraph. Two CHANGES verdicts → stop and ask.
+4. **Checkpoint** — Mark `[x]`, move `>>>`, update Session Context (HTML block + human section), Progress table, **Project Artifacts**, **Session History**; append to the day's work log (`work-logs/YYYY-MM-DD-<project>.md`, one file per project per day, one section per deliverable); ADR if a design commitment was made; commit + push the KB.
+5. **Continue or stop.** Stop conditions: a `GATE:` (demo what changed, evidence, what the gate decides); a decision only the user can make; a human-only action — post a numbered, click-by-click "Need from you" block through `handoff.sh need-from-you` and continue on the next unblocked item; a budget check (see Pacing); session end.
+6. **Waiting well.** Time-resolved blocks → a scheduled wakeup / `/loop` and keep going. User-resolved blocks → work elsewhere in the roadmap. Nothing unblocked → hand off.
+7. **Loose ends** — Before the handoff run `/loose-ends`: scan open PRs, uncommitted work and stale worktrees, pending deploys/migrations, unanswered "Need from you" items, owed docs/ADRs/work logs, dated follow-ups, orphan issues. Finish what the rules allow; ask the user once ("do now or queue?") only where it is a real choice; queue the rest in the business's `queue.md` (`~/Knowledge-Base/<business>/queue.md`) — one actionable line per item, newest first, moved to **## Done** when closed. Session start reads the queue's **## Open**. A future triage agent prioritizes across businesses.
+8. **Handoff** — Only when the session ends, the business switches, or the user asks: next deliverable, 2–3 sentences of bigger picture, docs to read, the `>>>` task, through `handoff.sh handoff <business/project>` (pbcopy + `~/.claude/handoffs/`). `/handoff` re-surfaces it later for one file read.
+
+### Pacing & budget gauges
+
+`~/.claude/statusline.sh` writes Claude Code's status JSON to `~/.claude/usage-data/statusline/sessions/<session_id>.json` (and `latest.json`) on every status-line event, opt-in by the directory existing; values are as of the session's most recent API response (`written_at` = write time). The session id is `$CLAUDE_CODE_SESSION_ID` (observed in the Bash tool, not in the documented env vars); a subagent inherits the parent's id and must NOT pace on this file (`CLAUDE_CODE_CHILD_SESSION=1`). Read it at every checkpoint:
+
+| Gauge | Rule |
+|---|---|
+| `context_window.used_percentage` < 50 | continue |
+| 50–70 | finish + checkpoint; continue only if the next deliverable uses the loaded files, else hand off |
+| ≥ 70 | checkpoint + hand off, always — auto-compaction is a pacing failure, not a tool |
+| any | new session on business/project switch, after a GATE approval, or after ~1 h idle (prompt cache expired) |
+| `rate_limits.five_hour.used_percentage` ≥ 80 | no new agents; finish the current deliverable; checkpoint; pause until `resets_at` and say so |
+| `rate_limits.seven_day.used_percentage` ≥ 85 | same, and tell the user explicitly |
+
+Why compaction is not a strategy: every turn re-sends the whole context, so a 70 %-full session costs several times a fresh one per turn, and the automatic summary is generic where the roadmap + handoff prompt are targeted.
+
+### Orchestration (subagents)
+
+Rules live in `~/CLAUDE.md` § Orchestration (two-agent standing cap, bounded brief, orchestrator holds gates/ADRs/roadmap/merges). Brief template:
+
+```
+Goal: <one sentence>
+Done when: <tests/commands that must pass>
+Scope: <files/dirs>; worktree: <path> (detached from origin/main)
+Constraints: <ADRs, patterns, CLAUDE.local.md notes>
+Stop and report if: tests fail after two attempts | a decision is needed | the approach changes
+Report (≤1 page): outcome · evidence (actual test output) · PR link · open questions
+```
 
 ### The Roadmap as Project Brain
 
