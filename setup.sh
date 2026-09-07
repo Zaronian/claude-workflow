@@ -353,6 +353,7 @@ install_if_new "$SCRIPT_DIR/templates/work-log-entry-template.md" "$TEMPLATE_DIR
 install_if_new "$SCRIPT_DIR/templates/case-study-template.md" "$TEMPLATE_DIR/case-study-template.md"
 install_if_new "$SCRIPT_DIR/templates/roi-calculation-template.md" "$TEMPLATE_DIR/roi-calculation-template.md"
 install_if_new "$SCRIPT_DIR/templates/one-page-overview-template.md" "$TEMPLATE_DIR/one-page-overview-template.md"
+install_if_new "$SCRIPT_DIR/templates/company-template.md" "$TEMPLATE_DIR/company-template.md"
 
 # --- Component 6: Pre-commit Hook ---
 header "Component 6/6: Pre-commit Secret Detection"

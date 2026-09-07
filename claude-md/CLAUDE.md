@@ -10,6 +10,8 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 
 - New project docs → `~/Knowledge-Base/[business]/projects/`. Ask which business if unclear. Never create project folders at the KB root. Never mix code repos into the KB.
 - Each code project may have a `CLAUDE.local.md` (DB config, deploy, test commands) — check for it.
+- **Business facts live in `company.md`, rules live in `CLAUDE.md`.** Each business keeps `~/Knowledge-Base/[business]/company.md` (template: `_system/Templates/company-template.md`) — KB owner, team roster, account ownership (env var names only), active projects, code repos — with an owner and a verified date. Read it at session start; when a fact changes, change it there and bump the date. Never restate those facts in a CLAUDE.md; duplicated rosters drift.
+- **Other harnesses.** If the user also runs another coding agent (e.g. Codex reads `AGENTS.md`), that agent's entry files are managed exclusively through it. Never create, edit, or delete them, even to fix a broken reference — tell the user. Shared business context goes through `company.md`; harness rules stay separate because the models and tooling differ.
 
 ## Secrets
 
@@ -19,7 +21,7 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 
 ## Git
 
-- **KB repos push directly to main** — no branches, no PRs. Committing and pushing work logs, case studies, roadmaps, and project docs at session end is pre-authorized. Keep commits focused. Pre-commit hooks block secrets.
+- **KB repos have one writer — the KB owner named in that business's `company.md` — who pushes directly to main** with no branches and no PRs; everyone else's sessions treat the KB as read-only and send proposed changes to the owner (an issue on the KB repo, or a message). **One logical change per commit** so any change rolls back with `git revert <sha>`. The one exception to "no PRs": a restructure or bulk move/delete (roughly >10 files) goes through a squash-merge PR purely so it reverts as one unit — no `/pr-review` needed, the merge condition below is for code. Committing and pushing work logs, case studies, roadmaps, and project docs at session end is pre-authorized for the owner. Stage only the files you changed (`git add <paths>`, never `git add -A` in a checkout other sessions share). Pre-commit hooks block secrets.
 - **Code repos use branch + PR** (`feat/` or `feature/`, `fix/`, `docs/`, `refactor/`). Commit and open a PR when a step is done. **Merge condition = full test suite green + `/pr-review` PASS** (fresh-context review). When both hold: merge, deploy (deploys are fine; additive schema migrations are part of a deploy), verify live, note the deploy in the project's checklist/roadmap, and tell the user in one paragraph. A review that fails twice after fixes → stop and ask. Destructive migrations, data rewrites, and anything touching production *data* still pause.
 - Never `git push --force` to main. Never `git reset --hard` without confirming uncommitted work is saved. Run `git status` first.
 
@@ -83,7 +85,7 @@ Keep one work log per project per day at the practice's `work-logs/YYYY-MM-DD-<p
 
 ## Documentation
 
-After installing tools, cloning repos, changing folder structure, adding credentials, or changing a project's status — update the relevant CLAUDE.md/README. READMEs for automation, multi-file systems, and cross-session work: purpose, status, usage, structure, key decisions.
+After installing tools, cloning repos, changing folder structure, adding credentials, changing team membership, or changing a project's status — update the business's `company.md` (facts: team, accounts, projects, repos; bump its verified date) and the relevant README. Touch a CLAUDE.md only when a *rule* changed. READMEs for automation, multi-file systems, and cross-session work: purpose, status, usage, structure, key decisions.
 
 ## Skills
 

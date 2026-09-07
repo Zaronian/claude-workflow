@@ -29,7 +29,7 @@ This repo installs a **methodology layer** on top of Claude Code — behavioral 
 | `run-project.py` | `~/Knowledge-Base/_system/scripts/` | Autonomous runner — one long run to the next gate, with a verifier subagent before the gate |
 | `open-roadmap.sh` | `~/Knowledge-Base/_system/scripts/` | Open roadmap in Marked 2 (or default viewer) |
 | `handoff.sh` | `~/Knowledge-Base/_system/scripts/` | Stores + pbcopys handoff prompts / "Need from you" blocks / commands under `~/.claude/handoffs/` |
-| 6 templates | `~/Knowledge-Base/_system/Templates/` | Roadmap, brief, work log, case study, ROI, overview |
+| 7 templates | `~/Knowledge-Base/_system/Templates/` | Roadmap, brief, work log, case study, ROI, overview, company facts (`company.md` per business: KB owner, team, accounts, projects, repos) |
 | `pre-commit-secrets` | `~/.scratch/hooks/` | Git hook to block accidental secret commits |
 
 ## Quickstart
