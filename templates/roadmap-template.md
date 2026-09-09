@@ -27,6 +27,7 @@ notes: [Brief context for the next session]
 
 ## Session Context
 
+**Tool:** [which coding agent currently owns this project; switch only at a checkpoint]
 **Last session:** YYYY-MM-DD — [one-line summary of what was accomplished]
 **Next session deliverable:** [what the next session should produce]
 **Relevant docs:** [links to documents needed for the next session]
