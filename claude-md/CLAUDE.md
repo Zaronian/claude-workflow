@@ -41,6 +41,7 @@ Everything lives under `~/Knowledge-Base/` (docs, one git repo per business) wit
 - **Bounded brief** (required): goal; definition of done (tests/commands); files/dirs in scope; constraints (ADRs, patterns); its own worktree; report format (≤1 page: outcome, evidence, PR link, open questions); **stop conditions** — stop and report if tests fail after two attempts, if a decision is needed, or if the approach changes.
 - The orchestrator (main session) holds gates, ADRs, roadmap, merges, and deploys. Relay every report; nothing an agent finds reaches the user otherwise.
 - **When parallel work would clearly pay for itself, say so** with a cost estimate; the user decides.
+- **Subagent model: Opus by default.** Pass `model: "opus"` on every Agent call — reviewers, finders, Explore, research and summary agents — and `model: "sonnet"` for mechanical single-verdict checks (verifiers, classifiers). Use the top-tier session model only when the brief states a specific reason the task needs it (a design judgment the main session would otherwise make itself); "it's the session model" is not a reason. Why: the top-tier pool is the binding usage limit, and subagent work does not need it. Built-in skills that fan out on the session model (`/code-review`, `/simplify`) are deliberate, occasional runs, never part of a routine gate.
 
 ## Working Style
 
