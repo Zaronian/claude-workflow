@@ -44,13 +44,14 @@ Why compaction is not a strategy: every turn re-sends the whole context, so a 70
 
 ### Orchestration (subagents)
 
-Rules live in `~/CLAUDE.md` § Orchestration (two-agent standing cap, bounded brief, orchestrator holds gates/ADRs/roadmap/merges). Brief template:
+Rules live in `~/CLAUDE.md` § Orchestration (two-agent standing cap, bounded brief, Opus by default for subagents, orchestrator holds gates/ADRs/roadmap/merges). Brief template:
 
 ```
 Goal: <one sentence>
 Done when: <tests/commands that must pass>
 Scope: <files/dirs>; worktree: <path> (detached from origin/main)
 Constraints: <ADRs, patterns, CLAUDE.local.md notes>
+Model: opus (default) | <session model> — only with the specific reason this task needs it
 Stop and report if: tests fail after two attempts | a decision is needed | the approach changes
 Report (≤1 page): outcome · evidence (actual test output) · PR link · open questions
 ```
