@@ -20,7 +20,7 @@ Declare → Execute → Deliver (tests + /pr-review PASS) → Merge + deploy + v
 
 1. **Declare** — Read the business's `company.md` (facts; check it is the KB owner's session before writing to the KB), then the roadmap's Session Context and the current phase (not the whole file; link the rest). State the deliverable and a 2–3 sentence bigger picture. Repeat each time the next `>>>` is pulled.
 2. **Execute** — Whatever the deliverable needs. Plan mode only when the approach is genuinely uncertain; if the diff could be described in one sentence, skip planning. Work outside the deliverable → roadmap Open Questions / future task, not in-place.
-3. **Deliver** — Evidence it works (test output, a running command, a screenshot). Code: full suite green + `/pr-review` PASS is the merge condition; then merge, deploy (additive migrations included), verify live, note the deploy in the project's checklist/roadmap, tell the user in one paragraph. Two CHANGES verdicts → stop and ask.
+3. **Deliver** — Evidence it works (test output, a running command, a screenshot). Code: full suite green + `/pr-review` PASS is the merge condition; then merge, deploy (additive migrations included), verify live, note the deploy in the project's checklist/roadmap, tell the user in one paragraph. A fourth CHANGES verdict (three fix rounds have not converged) → stop and ask.
 4. **Checkpoint** — Mark `[x]`, move `>>>`, update Session Context (HTML block + human section), Progress table, **Project Artifacts**, **Session History**; append to the day's work log (`work-logs/YYYY-MM-DD-<project>.md`, one file per project per day, one section per deliverable); ADR if a design commitment was made; commit + push the KB.
 5. **Continue or stop.** Stop conditions: a `GATE:` (demo what changed, evidence, what the gate decides); a decision only the user can make; a human-only action — post a numbered, click-by-click "Need from you" block through `handoff.sh need-from-you` and continue on the next unblocked item; a budget check (see Pacing); session end.
 6. **Waiting well.** Time-resolved blocks → a scheduled wakeup / `/loop` and keep going. User-resolved blocks → work elsewhere in the roadmap. Nothing unblocked → hand off.
@@ -44,13 +44,14 @@ Why compaction is not a strategy: every turn re-sends the whole context, so a 70
 
 ### Orchestration (subagents)
 
-Rules live in `~/CLAUDE.md` § Orchestration (two-agent standing cap, bounded brief, orchestrator holds gates/ADRs/roadmap/merges). Brief template:
+Rules live in `~/CLAUDE.md` § Orchestration (two-agent standing cap, bounded brief, orchestrator holds gates/ADRs/roadmap/merges); which model a subagent runs on is a harness-config rule, not part of this guide. Brief template:
 
 ```
 Goal: <one sentence>
 Done when: <tests/commands that must pass>
 Scope: <files/dirs>; worktree: <path> (detached from origin/main)
 Constraints: <ADRs, patterns, CLAUDE.local.md notes>
+Model: <per the harness's subagent-model rule; if it is the session's top-tier model, the specific reason this task needs it>
 Stop and report if: tests fail after two attempts | a decision is needed | the approach changes
 Report (≤1 page): outcome · evidence (actual test output) · PR link · open questions
 ```
